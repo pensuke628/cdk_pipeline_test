@@ -1,7 +1,7 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-export class MyStack extends Stack {
+export class CdkPipelineStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
@@ -17,7 +17,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'cdk-pipeline-test-dev', { env: devEnv });
+new CdkPipelineStack(app, 'cdk-pipeline-test-dev', { env: devEnv });
 // new MyStack(app, 'cdk_pipeline_test-prod', { env: prodEnv });
 
 app.synth();
