@@ -17,7 +17,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'cdk_pipeline_test-dev', { env: devEnv });
+new MyStack(app, 'cdk-pipeline-test-dev', { env: devEnv });
 // new MyStack(app, 'cdk_pipeline_test-prod', { env: prodEnv });
 
 app.synth();
