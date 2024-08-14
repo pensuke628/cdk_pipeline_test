@@ -1,7 +1,7 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
+import { Construct } from 'constructs';
 import { InfraStage } from './stage/infra-stage';
 
 export class CdkPipelineStack extends Stack {
@@ -9,7 +9,7 @@ export class CdkPipelineStack extends Stack {
     super(scope, id, props);
 
     const cdkDeployRole = iam.Role.fromRoleName(this, 'CdkDeployRole',
-      'cdk-hnb659fds-deploy-role-560388883230-ap-northeast-1'
+      'cdk-hnb659fds-deploy-role-560388883230-ap-northeast-1',
     );
     const PipelineDeployRole = new iam.Role(this, 'CodeDeployRole', {
       assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
