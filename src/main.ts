@@ -4,29 +4,31 @@ import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelin
 import { Construct } from 'constructs';
 import { InfraStage } from './stage/infra-stage';
 
+interface CdkPipelineStackProps extends StackProps {
+  env: {
+    account: string;
+    region: string;
+  };
+  branch: string;
+  connectionArn: string;
+}
+
 export class CdkPipelineStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
+  constructor(scope: Construct, id: string, props: CdkPipelineStackProps) {
     super(scope, id, props);
 
     const cdkDeployRole = iam.Role.fromRoleName(this, 'CdkDeployRole',
-      'cdk-hnb659fds-deploy-role-560388883230-ap-northeast-1',
+      `cdk-hnb659fds-deploy-role-${props.env.account}-${props.env.region}`,
     );
     const PipelineDeployRole = new iam.Role(this, 'CodeDeployRole', {
       assumedBy: new iam.ServicePrincipal('codepipeline.amazonaws.com'),
     });
     cdkDeployRole.grantAssumeRole(PipelineDeployRole);
-    // TODO: 権限修正
-    // PipelineDeployRole.addToPrincipalPolicy(
-    //   new iam.PolicyStatement({
-    //     actions: ['sts:AssumeRole'],
-    //     effect: iam.Effect.ALLOW,
-    //     principals: [new iam.ArnPrincipal(cdkDeployRole.roleArn)],
-    //   }),
-    // );
 
     // connectionは手動で作成する
-    const source = CodePipelineSource.connection('pensuke628/cdk_pipeline_test', 'main', {
-      connectionArn: 'arn:aws:codeconnections:ap-northeast-1:560388883230:connection/8b85ff8c-2ddc-4ed1-adc6-f4fde0550b5c',
+    const source = CodePipelineSource.connection('pensuke628/cdk_pipeline_test', props.branch, {
+      connectionArn: props.connectionArn,
+      // connectionArn: ,
     });
 
     const pipeline = new CodePipeline(this, 'Pipeline', {
@@ -41,19 +43,34 @@ export class CdkPipelineStack extends Stack {
       selfMutation: false,
       role: PipelineDeployRole,
     });
-    pipeline.addStage(new InfraStage(this, 'Dev'));
+    pipeline.addStage(new InfraStage(this, id));
   }
 }
 
 // for development, use account/region from cdk cli
 const devEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
+  account: process.env.CDK_DEFAULT_ACCOUNT || '123456789012',
+  region: process.env.CDK_DEFAULT_REGION || 'ap-northeast-1',
+};
+
+const stgEnv = {
+  account: process.env.CDK_DEFAULT_ACCOUNT || '123456789012',
+  region: 'us-east-1',
 };
 
 const app = new App();
 
-new CdkPipelineStack(app, 'cdk-pipeline-test-dev', { env: devEnv });
+new CdkPipelineStack(app, 'cdk-pipeline-test-dev', {
+  env: devEnv,
+  branch: 'development',
+  connectionArn: 'arn:aws:codeconnections:ap-northeast-1:560388883230:connection/8b85ff8c-2ddc-4ed1-adc6-f4fde0550b5c',
+});
+
+new CdkPipelineStack(app, 'cdk-pipeline-test-stg', {
+  env: stgEnv,
+  branch: 'staging',
+  connectionArn: 'arn:aws:codeconnections:ap-northeast-1:560388883230:connection/8b85ff8c-2ddc-4ed1-adc6-f4fde0550b5c',
+});
 // new MyStack(app, 'cdk_pipeline_test-prod', { env: prodEnv });
 
 app.synth();
