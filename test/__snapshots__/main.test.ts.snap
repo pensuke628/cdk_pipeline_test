@@ -42,11 +42,7 @@ exports[`Snapshot 1`] = `
                     {
                       "Ref": "AWS::Partition",
                     },
-                    ":iam::",
-                    {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":role/cdk-hnb659fds-deploy-role-560388883230-ap-northeast-1",
+                    ":iam::123456789012:role/cdk-hnb659fds-deploy-role-123456789012-ap-northeast-1",
                   ],
                 ],
               },
@@ -271,8 +267,8 @@ exports[`Snapshot 1`] = `
                       ],
                     ],
                   },
-                  "StackName": "Dev-InfraStack",
-                  "TemplatePath": "Synth_Output::assembly-test-Dev/testDevInfraStack574EC72A.template.json",
+                  "StackName": "test-InfraStack",
+                  "TemplatePath": "Synth_Output::assembly-test-test/testInfraStackF21A1943.template.json",
                 },
                 "InputArtifacts": [
                   {
@@ -315,7 +311,7 @@ exports[`Snapshot 1`] = `
                 "Configuration": {
                   "ActionMode": "CHANGE_SET_EXECUTE",
                   "ChangeSetName": "PipelineChange",
-                  "StackName": "Dev-InfraStack",
+                  "StackName": "test-InfraStack",
                 },
                 "Name": "Deploy",
                 "RoleArn": {
@@ -344,7 +340,7 @@ exports[`Snapshot 1`] = `
                 "RunOrder": 2,
               },
             ],
-            "Name": "Dev",
+            "Name": "test",
           },
         ],
       },
@@ -556,15 +552,7 @@ exports[`Snapshot 1`] = `
                       {
                         "Ref": "AWS::Partition",
                       },
-                      ":logs:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":log-group:/aws/codebuild/",
+                      ":logs:ap-northeast-1:123456789012:log-group:/aws/codebuild/",
                       {
                         "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                       },
@@ -579,15 +567,7 @@ exports[`Snapshot 1`] = `
                       {
                         "Ref": "AWS::Partition",
                       },
-                      ":logs:",
-                      {
-                        "Ref": "AWS::Region",
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":log-group:/aws/codebuild/",
+                      ":logs:ap-northeast-1:123456789012:log-group:/aws/codebuild/",
                       {
                         "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                       },
@@ -614,15 +594,7 @@ exports[`Snapshot 1`] = `
                     {
                       "Ref": "AWS::Partition",
                     },
-                    ":codebuild:",
-                    {
-                      "Ref": "AWS::Region",
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":report-group/",
+                    ":codebuild:ap-northeast-1:123456789012:report-group/",
                     {
                       "Ref": "PipelineBuildSynthCdkBuildProject6BEFA8E6",
                     },
@@ -748,11 +720,7 @@ exports[`Snapshot 1`] = `
                       {
                         "Ref": "AWS::Partition",
                       },
-                      ":iam::",
-                      {
-                        "Ref": "AWS::AccountId",
-                      },
-                      ":root",
+                      ":iam::123456789012:root",
                     ],
                   ],
                 },
